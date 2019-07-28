@@ -1,5 +1,4 @@
 import React from "react";
-
 export default class Sneaker extends React.Component {
   constructor() {
     super();
@@ -29,10 +28,18 @@ export default class Sneaker extends React.Component {
   handleSelect(props) {
     const color = props.color ? props.color : this.state.bySize[props.size][0];
     const size = props.size ? props.size : this.state.byColor[props.color][0];
+    const selectedColorSizes = props.color
+      ? this.state.byColor[props.color]
+      : this.state.allSizes;
+    const selectedSizeColors = props.size
+      ? this.state.bySize[props.size]
+      : this.state.allColors;
     this.setState({
       selectedColor: color,
       selectedSize: size,
-      selectedImage: this.state.allImages[color]
+      selectedImage: this.state.allImages[color],
+      selectedColorSizes,
+      selectedSizeColors
     });
   }
   render() {
@@ -59,8 +66,8 @@ export default class Sneaker extends React.Component {
                 onChange={e => this.handleSelect({ size: e.target.value })}
                 value={this.state.selectedSize}
               >
-                {this.state.allSizes
-                  ? this.state.allSizes.map(size => (
+                {this.state.selectedColorSizes
+                  ? this.state.selectedColorSizes.map(size => (
                       <option key={size}>{size}</option>
                     ))
                   : null}
@@ -75,8 +82,8 @@ export default class Sneaker extends React.Component {
                 value={this.state.selectedColor}
                 style={{ textTransform: "capitalize" }}
               >
-                {this.state.allColors
-                  ? this.state.allColors.map(color => (
+                {this.state.selectedSizeColors
+                  ? this.state.selectedSizeColors.map(color => (
                       <option key={color}>{color}</option>
                     ))
                   : null}
